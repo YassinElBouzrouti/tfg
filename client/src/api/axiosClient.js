@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { getAuthToken } from '../utils/authSession.js';
 
+const resolvedApiBaseURL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? 'http://localhost:3000/api' : '/api');
+
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  baseURL: resolvedApiBaseURL,
   headers: {
     'Content-Type': 'application/json',
   },
