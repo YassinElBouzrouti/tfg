@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum MembershipStatus {
+  PENDING
+  ACTIVE
+  PAUSED
+  EXPIRED
+  CANCELLED
+}
+
+model User {
+  id           String       @id @default(cuid())
+  name         String
+  lastName     String       @default("")
+  email        String       @unique
+  passwordHash String
+  phone        String?
+  role         Role         @default(MEMBER)
+  memberships  Membership[]
+  bookings     Booking[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Plan {
+  id             String       @id @default(cuid())
+  name           String       @unique
+  description    String?
+  price          Decimal      @db.Decimal(10, 2)
+  durationMonths Int          @default(1)
+  isActive       Boolean      @default(true)
+  memberships    Membership[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Membership {
+  id        String           @id @default(cuid())
+  userId    String
+  planId    String
+  status    MembershipStatus @default(PENDING)
+  startDate DateTime
+  endDate   DateTime
+  user      User             @relation(fields: [userId], references: [id], onDelete: Restrict)
+  plan      Plan             @relation(fields: [planId], references: [id], onDelete: Restrict)
+  payments  Payment[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([userId, status])
+  @@index([planId])
+}
+
+model Payment {
+  id                   String        @id @default(cuid())
+  membershipId         String
+  amount               Decimal       @db.Decimal(10, 2)
+  currency             String        @default("EUR")
+  status               PaymentStatus @default(PENDING)
+  method               String?
+  transactionReference String        @unique
+  dueDate              DateTime
+  paidAt               DateTime?
+  membership           Membership    @relation(fields: [membershipId], references: [id], onDelete: Restrict)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@index([membershipId, status])
+}
+
+model MartialClass {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  name            String
+  discipline      String
+  instructorName  String
+  level           String
+  dayOfWeek       String
+  startTime       String
+  endTime         String    @default("00:00")
+  durationMinutes Int
+  capacity        Int
+  isActive        Boolean   @default(true)
+  bookings        Booking[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([name, dayOfWeek, startTime])
+}
+
+model Booking {
+  id             String        @id @default(cuid())
+  userId         String
+  martialClassId String
+  scheduledFor   DateTime
+  status         BookingStatus @default(PENDING)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  martialClass   MartialClass  @relation(fields: [martialClassId], references: [id], onDelete: Restrict)
+  attendance     Attendance?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@unique([userId, martialClassId, scheduledFor])
+  @@index([martialClassId, scheduledFor])
+}
+
+model Attendance {
+  id          String    @id @default(cuid())
+  bookingId   String    @unique
+  attended    Boolean   @default(false)
+  checkedInAt DateTime?
+  notes       String?
+  booking     Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Fondo deportivo de artes marciales">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b0f14" />
+      <stop offset="100%" stop-color="#1b1007" />
+    </linearGradient>
+    <radialGradient id="glow" cx="70%" cy="25%" r="50%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)" />
+  <rect width="1200" height="800" fill="url(#glow)" />
+  <g opacity="0.9">
+    <circle cx="600" cy="340" r="170" fill="#101722" />
+    <rect x="520" y="180" width="160" height="340" rx="70" fill="#161f2b" />
+    <rect x="450" y="280" width="300" height="62" rx="31" fill="#1f2a38" />
+    <rect x="530" y="520" width="140" height="170" rx="30" fill="#0f151f" />
+  </g>
+  <text x="70" y="720" font-family="Arial, sans-serif" font-size="44" fill="#f8fafc" opacity="0.22">MARTIAL GYM CLUB</text>
+</svg>
