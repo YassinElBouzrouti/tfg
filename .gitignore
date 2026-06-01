@@ -6,4 +6,3 @@ dist/
 npm-debug.log*
 *.log
 .DS_Store
-tfg/
