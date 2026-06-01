@@ -7,9 +7,28 @@ import notFound from './middlewares/notFound.js';
 
 const app = express();
 
+const allowedOrigins = new Set(['http://localhost:5173']);
+
+if (process.env.CLIENT_URL) {
+  allowedOrigins.add(process.env.CLIENT_URL);
+}
+if (process.env.VERCEL_URL) {
+  allowedOrigins.add(`https://${process.env.VERCEL_URL}`);
+}
+if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+  allowedOrigins.add(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+}
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      callback(null, allowedOrigins.has(origin));
+    },
   }),
 );
 app.use(express.json());
