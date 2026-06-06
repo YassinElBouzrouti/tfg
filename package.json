@@ -2,6 +2,7 @@
   "name": "gym_artes_marciales",
   "private": true,
   "version": "0.1.0",
+  "type": "module",
   "description": "Aplicacion full stack para un gimnasio de artes marciales.",
   "workspaces": [
     "client",
