@@ -26,22 +26,23 @@ function App() {
         }
       />
       <Route
-        path="/admin/dashboard"
+        path="/admin"
         element={
-          <RoleProtectedRoute allowedRoles={['ADMIN']} redirectTo="/admin">
+          <RoleProtectedRoute allowedRoles={['ADMIN']} redirectTo="/login">
             <AdminClubDashboard />
           </RoleProtectedRoute>
         }
       />
+      <Route path="/admin/login" element={<AdminAccess />} />
+      <Route path="/admin/dashboard" element={<Navigate replace to="/admin" />} />
       <Route
         path="/admin/members/:memberId"
         element={
-          <RoleProtectedRoute allowedRoles={['ADMIN']} redirectTo="/admin">
+          <RoleProtectedRoute allowedRoles={['ADMIN']} redirectTo="/login">
             <AdminMemberProfile />
           </RoleProtectedRoute>
         }
       />
-      <Route path="/admin" element={<AdminAccess />} />
       <Route path="/admin-club-secreto" element={<Navigate replace to="/admin" />} />
       <Route path="/admin-club-secreto/miembros/:memberId" element={<Navigate replace to="/admin" />} />
     </Routes>

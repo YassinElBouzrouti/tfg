@@ -32,7 +32,7 @@ function AdminAccess() {
         }
 
         if (data?.user?.role === 'ADMIN') {
-          navigate('/admin/dashboard', { replace: true });
+          navigate('/admin', { replace: true });
           return;
         }
 
@@ -68,7 +68,7 @@ function AdminAccess() {
       }
 
       saveAuthSession({ token: data.token, user: data.user });
-      navigate('/admin/dashboard', { replace: true });
+      navigate('/admin', { replace: true });
     } catch (requestError) {
       if (requestError?.response?.status === 401) {
         setError('Credenciales incorrectas');

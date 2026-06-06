@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axiosClient from '../api/axiosClient.js';
 import AuthCard from '../components/AuthCard.jsx';
 import apiErrorMessage from '../utils/apiError.js';
-import { clearAuthSession, saveAuthSession } from '../utils/authSession.js';
+import { saveAuthSession } from '../utils/authSession.js';
 
 function Login() {
   const navigate = useNavigate();
@@ -21,8 +21,8 @@ function Login() {
     try {
       const { data } = await axiosClient.post('/auth/login', { email, password });
       if (data.user.role === 'ADMIN') {
-        clearAuthSession();
-        setError('El acceso de administrador se realiza desde la ruta privada correspondiente');
+        saveAuthSession({ token: data.token, user: data.user });
+        navigate('/admin');
         return;
       }
 

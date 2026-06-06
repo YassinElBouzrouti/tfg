@@ -67,7 +67,7 @@ function AdminMemberProfile() {
       <div className="mt-4">
         <Link
           className="text-sm font-semibold uppercase tracking-wider text-slate-300 hover:text-white"
-          to="/admin/dashboard"
+          to="/admin"
         >
           Volver al panel
         </Link>
